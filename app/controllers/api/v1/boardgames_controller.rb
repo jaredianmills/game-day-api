@@ -1,7 +1,7 @@
 class Api::V1::BoardgamesController < ApplicationController
 
   def search
-    response = []
+    boardgames_response = []
     url = "https://www.boardgamegeek.com/xmlapi/search?search=#{params[:search_term]}"
     request = RestClient.get(url)
     boardgames = Hash.from_xml(request)
@@ -10,10 +10,10 @@ class Api::V1::BoardgamesController < ApplicationController
       boardgame_request = RestClient.get(boardgame_url)
       boardgame_details = Hash.from_xml(boardgame_request)
       title = Nokogiri::XML(boardgame_request).xpath('//name').find{|name| name.attributes['primary']}.text
-      boardgame_details[:title] = title
-      response << boardgame_details
+      boardgame_details['boardgames']['boardgame'][:title] = title
+      boardgames_response << boardgame_details['boardgames']['boardgame']
     end
-    render json: response
+    render json: boardgames_response
   end
 
   def index
