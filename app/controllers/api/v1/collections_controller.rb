@@ -5,4 +5,7 @@ class Api::V1::CollectionsController < ApplicationController
     collection = Hash.from_xml(request)
     render json: collection
   end
+
+  def show
+  end
 end
