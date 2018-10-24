@@ -5,6 +5,7 @@ Rails.application.routes.draw do
       resources :boardgames
       resources :users
       post '/boardgames/search', to: 'boardgames#search'
+      post '/boardgames/search_by_id', to: 'boardgames#search_by_id'
       post '/collections/search', to: 'collections#search'
       post '/login', to: 'auth#create'
       get '/profile', to: 'users#profile'

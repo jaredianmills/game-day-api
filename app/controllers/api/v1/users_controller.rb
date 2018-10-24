@@ -7,8 +7,12 @@ class Api::V1::UsersController < ApplicationController
   end
 
   def create
-    @user = User.create(user_params)
+    @user = User.new(user_params)
+
     if @user.valid?
+      @user.save
+      collection = Collection.new
+      collection.user = @user
       @token = encode_token(user_id: @user.id)
       render json: { user: UserSerializer.new(@user), jwt: @token }, status: :created
     else
@@ -17,10 +21,16 @@ class Api::V1::UsersController < ApplicationController
     end
   end
 
+  def update
+    @user.bgg_username = user_params[:bgg_username]
+    @user.save
+    render json: @user
+  end
+
   private
 
   def user_params
-    params.require(:user).permit(:username, :password)
+    params.require(:user).permit(:username, :password, :bgg_username)
   end
 
   def find_user
