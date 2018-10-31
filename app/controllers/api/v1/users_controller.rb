@@ -16,15 +16,19 @@ class Api::V1::UsersController < ApplicationController
       @token = encode_token(user_id: @user.id)
       render json: { user: UserSerializer.new(@user), jwt: @token }, status: :created
     else
-      # render json: { error: 'Username already in use' }, status: :not_acceptable
       render json: { error: @user.errors.full_messages }
     end
   end
 
   def update
+    @user.username = user_params[:username]
     @user.bgg_username = user_params[:bgg_username]
-    @user.save
-    render json: @user
+    if @user.valid?
+      @user.save
+      render json: @user
+    else
+      render json: { error: @user.errors.full_messages }
+    end
   end
 
   private
