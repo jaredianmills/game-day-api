@@ -31,13 +31,15 @@ class Api::V1::BoardgamesController < ApplicationController
     suggested_num_players = boardgame_details['poll'].find {|poll| poll['name'] = 'suggested_numplayers'}['results']
     highest_num_votes = 0
     best_at = nil
-
-    suggested_num_players.each do |result|
-      num_players = result['numplayers']
-      votes = result["result"].find {|poll_result| poll_result["value"] == "Best"}["numvotes"]
-      if votes.to_i > highest_num_votes
-        highest_num_votes = votes.to_i
-        best_at = num_players
+    if suggested_num_players.class == Array
+      puts suggested_num_players.length
+      suggested_num_players.each do |result|
+        num_players = result['numplayers']
+        votes = result["result"].find {|poll_result| poll_result["value"] == "Best"}['numvotes'].to_i
+        if votes > highest_num_votes
+          highest_num_votes = votes
+          best_at = num_players
+        end
       end
     end
     boardgame_details["best_at"] = best_at
