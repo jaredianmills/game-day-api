@@ -21,8 +21,21 @@ class Api::V1::UsersController < ApplicationController
   end
 
   def update
+    if user_params[:username] == ''
+      render json: { error: "Username cannot be blank" }
+      return
+    end
+
+    found_user = User.find_by(username: user_params[:username])
+
+    if found_user && found_user.id != user_params[:id]
+      render json: { error: "That username is already in use" }
+      return
+    end
+
     @user.username = user_params[:username]
     @user.bgg_username = user_params[:bgg_username]
+
     if @user.valid?
       @user.save
       render json: @user
