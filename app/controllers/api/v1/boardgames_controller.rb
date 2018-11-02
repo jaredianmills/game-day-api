@@ -32,7 +32,6 @@ class Api::V1::BoardgamesController < ApplicationController
     highest_num_votes = 0
     best_at = nil
     if suggested_num_players.class == Array
-      puts suggested_num_players.length
       suggested_num_players.each do |result|
         num_players = result['numplayers']
         votes = result["result"].find {|poll_result| poll_result["value"] == "Best"}['numvotes'].to_i
