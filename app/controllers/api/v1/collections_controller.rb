@@ -5,7 +5,12 @@ class Api::V1::CollectionsController < ApplicationController
     request = RestClient.get(url)
     collection = Hash.from_xml(request)
     filtered_collection = collection['items']['item'].select {|game| game['status']['own'] === '1'}
-    render json: filtered_collection
+
+    if filtered_collection
+      render json: filtered_collection
+    else
+      self.search
+    end
   end
 
 end
