@@ -50,4 +50,20 @@ class Api::V1::BoardgamesController < ApplicationController
     render json: @boardgames
   end
 
+  def create
+    @boardgame = Boardgame.new(boardgame_params)
+
+    if @boardgame.save
+      render json: @boardgame
+    else
+      render json: { error: @boardgame.errors.full_messages }
+    end
+  end
+
+  private
+
+  def boardgame_params
+    params.require(:boardgame).permit(:user_id, :boardgame_id)
+  end
+
 end
