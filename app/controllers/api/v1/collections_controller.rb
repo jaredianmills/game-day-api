@@ -17,7 +17,6 @@ class Api::V1::CollectionsController < ApplicationController
       filtered_collection = collection['items']['item'].select {|game| game['status']['own'] === '1'}
       render json: filtered_collection
     end
-
   end
 
 
