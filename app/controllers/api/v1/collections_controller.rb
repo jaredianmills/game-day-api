@@ -15,6 +15,8 @@ class Api::V1::CollectionsController < ApplicationController
       render json: collection['errors']
     else
       filtered_collection = collection['items']['item'].select {|game| game['status']['own'] === '1'}
+      user_id = decoded_token[0]['user_id']
+      filtered_collection.concat(User.find(user_id).boardgames)
       render json: filtered_collection
     end
   end

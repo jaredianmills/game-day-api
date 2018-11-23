@@ -63,7 +63,7 @@ class Api::V1::BoardgamesController < ApplicationController
   private
 
   def boardgame_params
-    params.require(:boardgame).permit(:user_id, :boardgame_id)
+    params.require(:boardgame).permit(:user_id, :objectid)
   end
 
 end
