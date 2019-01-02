@@ -29,6 +29,11 @@ class Api::V1::BoardgamesController < ApplicationController
     boardgame_details = boardgame_details['boardgames']['boardgame']
     boardgame_details[:title] = title
     suggested_num_players = boardgame_details['poll'].find {|poll| poll['name'] = 'suggested_numplayers'}['results']
+    boardgame_details["best_at"] = determine_best_at_count(suggested_num_players)
+    boardgame_details
+  end
+
+  def determine_best_at_count(suggested_num_players)
     highest_num_votes = 0
     best_at = nil
     if suggested_num_players.class == Array
@@ -41,8 +46,7 @@ class Api::V1::BoardgamesController < ApplicationController
         end
       end
     end
-    boardgame_details["best_at"] = best_at
-    boardgame_details
+    best_at
   end
 
   def index
